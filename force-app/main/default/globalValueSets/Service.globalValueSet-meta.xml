@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Medicare-funded sleep study</fullName>
+        <default>false</default>
+        <label>Medicare-funded sleep study</label>
+    </customValue>
+    <customValue>
+        <fullName>Physician Consult (NSW only)</fullName>
+        <default>false</default>
+        <label>Physician Consult (NSW only)</label>
+    </customValue>
+    <customValue>
+        <fullName>Patient-funded sleep study</fullName>
+        <default>false</default>
+        <label>Patient-funded sleep study</label>
+    </customValue>
+    <customValue>
+        <fullName>CPAP treatment</fullName>
+        <default>false</default>
+        <label>CPAP treatment</label>
+    </customValue>
+    <masterLabel>Service</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
