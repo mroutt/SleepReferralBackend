@@ -50,10 +50,20 @@ public class ConvertSleepReferralLeads {
         }
 
         //TODO: Create a Sleep Referral Record and attach it to both the Account and the Contact
+        Sleep_Referral__c sleepReferral = new Sleep_Referral__c();
+        sleepReferral.Account__c = account.Id;
+        sleepReferral.Contact__c = contact.Id;
+        sleepReferral.Created_from_Lead__c = lead.Id;
+        sleepReferral.Medicare_Referral_Number__c = lead.Medicare_Referral_Number__c;
+        sleepReferral.Referral_Reason__c = lead.Referral_Reason__c;
+
+        insert sleepReferral;
 
         //TODO: Create the questionairre records and attach them to the Sleep Referral Record
 
         //TODO: Send an email to the doctor/provider to let them know that we have processed the referral info
+
+        //TODO: Mark the lead as converted
     }
 
 }

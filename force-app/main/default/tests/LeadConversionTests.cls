@@ -15,6 +15,7 @@ public class LeadConversionTests {
         lead.LastName = 'Jones';
         lead.Provider_Number__c = 'AAFFFF99989';
         lead.Referral_Reason__c = 'Trouble Sleeping';
+        lead.Medicare_Referral_Number__c = 'REW4452';
         lead.Service__c = 'Medicare-funded sleep study';
         lead.Phone = '+1(444)847-0909';
 
@@ -29,9 +30,11 @@ public class LeadConversionTests {
         System.assertEquals(lead.Phone, account.Phone);
         
         // Validate the associated contact was created
-        List<Contact> contacts = [SELECT Id, FirstName, LastName, Phone, Medicare_Expiration_Date__c, Gender__c, Language__c, Birthdate FROM Contact WHERE AccountId = :account.Id AND Medicare_Number__c = :lead.Medicare_Number__c];
+        List<Contact> contacts = [SELECT Id, AccountId, FirstName, LastName, Phone, Medicare_Number__c, Medicare_Expiration_Date__c, Gender__c, Language__c, Birthdate FROM Contact];
         System.assertEquals(1, contacts.size());
         Contact contact = contacts.get(0);
+        System.assertEquals(account.Id, contact.AccountId);
+        System.assertEquals(lead.Medicare_Number__c, contact.Medicare_Number__c);
         System.assertEquals(lead.FirstName, contact.FirstName);
         System.assertEquals(lead.LastName, contact.LastName);
         System.assertEquals(lead.Patient_Phone__c, contact.Phone);
@@ -39,5 +42,16 @@ public class LeadConversionTests {
         System.assertEquals(lead.Gender__c, contact.Gender__c);
         System.assertEquals(lead.Language__C, contact.Language__c);
         System.assertEquals(lead.Date_of_Birth__c, contact.Birthdate);
+
+        // Validate that the sleep referral was created
+        List<Sleep_Referral__c> sleepReferrals = [SELECT Id, Account__c, Contact__c, Created_from_Lead__c, Referral_Reason__c, Medicare_Referral_Number__c FROM Sleep_Referral__c];
+        System.assertEquals(1, sleepReferrals.size());
+        Sleep_Referral__c sleepReferral = sleepReferrals.get(0);
+        System.assertEquals(account.Id, sleepReferral.Account__c);
+        System.assertEquals(contact.Id, sleepReferral.Contact__c);
+        System.assertEquals(lead.Id, sleepReferral.Created_from_Lead__c);
+
+        System.assertEquals(lead.Medicare_Referral_Number__c, sleepReferral.Medicare_Referral_Number__c);
+        System.assertEquals(lead.Referral_Reason__c, sleepReferral.Referral_Reason__c);
     }
 }
