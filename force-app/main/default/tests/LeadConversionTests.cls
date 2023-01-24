@@ -24,7 +24,7 @@ public class LeadConversionTests {
 
         insert lead;
 
-        // TODO: Validate that the Sleep Referral Record was created
+        //Validate that the Sleep Referral Record was created
         List<Sleep_Referral__c> sleepReferrals = [SELECT Id, Created_from_Lead__c, Medicare_Reference_Number__c, Referral_Reason__c, Service__C FROM Sleep_Referral__c];
 
         system.assertEquals(1, sleepReferrals.size());

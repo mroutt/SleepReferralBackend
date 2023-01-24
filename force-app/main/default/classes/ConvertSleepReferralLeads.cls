@@ -3,7 +3,7 @@ public class ConvertSleepReferralLeads {
     public static void Execute(List<Lead> leads) {
 
         for (Lead lead : leads) {
-            if(lead.LeadSource != 'Sleep Referral Web Form') {
+            if(lead.LeadSource == 'Sleep Referral Web Form') {
                 // This lead came from the web form. Let's convert it.
                 ConvertLead(lead);
             }
@@ -48,7 +48,7 @@ public class ConvertSleepReferralLeads {
             contact.Email = lead.Provider_Email__c;
             contact.Fax = lead.Provider_Fax__c;
             contact.LastName = lead.Company;
-            contact.Phone = lead.Phone = lead.Provider_Phone__c;
+            contact.Phone = lead.Phone;
             insert contact;
 
             provider = new Provider__c();
