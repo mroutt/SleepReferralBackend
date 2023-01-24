@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sleep_Referral__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <label>Sleep Referral</label>
+    <referenceTo>Sleep_Referral__c</referenceTo>
+    <relationshipLabel>OSA50_Questionnaires</relationshipLabel>
+    <relationshipName>OSA50_Questionnaires</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
