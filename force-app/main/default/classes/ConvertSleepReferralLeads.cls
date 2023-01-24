@@ -62,6 +62,27 @@ public class ConvertSleepReferralLeads {
         //TODO: Create the questionairre records and attach them to the Sleep Referral Record
 
         //TODO: Send an email to the doctor/provider to let them know that we have processed the referral info
+        EmailTemplate emailTemplate = [SELECT Id, Name FROM EmailTemplate WHERE Name = 'Sleep Referral Processed' AND IsActive = true];
+
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+
+        //String accountObjectTypeId = account.getSObjectType().getDescribe().getId();
+
+        // Set the recipient address
+        mail.setToAddresses(new String[] {lead.Email});
+
+        // Set the ID of the Lightning email template
+        mail.setTemplateId(emailTemplate.Id);
+
+        // Set the recipient object ID 
+        mail.setTargetObjectId(account.Id);
+
+        // Set the sender address
+        mail.setReplyTo('sender@example.com');
+
+        // Send the email
+        Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+
 
         //TODO: Mark the lead as converted
     }

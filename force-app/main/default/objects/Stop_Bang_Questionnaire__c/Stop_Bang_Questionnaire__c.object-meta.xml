@@ -153,12 +153,12 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>OSA50 Questionnaire</label>
+    <label>Stop Bang Questionnaire</label>
     <nameField>
-        <label>OSA50 Questionnaire Name</label>
+        <label>Stop Bang Question Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>OSA50_Questionnaires</pluralLabel>
+    <pluralLabel>Stop Bang Questionnaires</pluralLabel>
     <searchLayouts></searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

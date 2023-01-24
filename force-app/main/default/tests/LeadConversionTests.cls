@@ -50,8 +50,11 @@ public class LeadConversionTests {
         System.assertEquals(account.Id, sleepReferral.Account__c);
         System.assertEquals(contact.Id, sleepReferral.Contact__c);
         System.assertEquals(lead.Id, sleepReferral.Created_from_Lead__c);
-
         System.assertEquals(lead.Medicare_Referral_Number__c, sleepReferral.Medicare_Referral_Number__c);
         System.assertEquals(lead.Referral_Reason__c, sleepReferral.Referral_Reason__c);
+
+        // Validate that an email was sent
+        Integer emailInvocations = Limits.getEmailInvocations();
+        System.assertEquals(1, emailInvocations);
     }
 }
