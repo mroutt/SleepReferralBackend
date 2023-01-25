@@ -35,8 +35,19 @@ public class ConvertSleepReferralLeads {
         sleepReferral.Service__c = lead.Referral_Service__c;
         sleepReferral.Name = GetSleepReferralName(provider, patient);
         sleepReferral.Epworth_Questionnaire__c = CreateEpworthQuestionnaire(lead).Id;
+        sleepReferral.OSA50_Questionnaire__c = CreateOSA50Questionnaire(lead).Id;
         insert sleepReferral;
         return sleepReferral;
+    }
+
+    private static OSA50_Questionnaire__c CreateOSA50Questionnaire(Lead lead) {
+        OSA50_Questionnaire__c osa50 = new OSA50_Questionnaire__c();
+        osa50.Apnoeas__c = lead.OSA50_Apnoeas__c;
+        osa50.Obesity__c = lead.OSA50_Obesity__c;
+        osa50.Snoring__c = lead.OSA50_Snoring__c;
+        osa50.Over_50__c = IsPersonOver50(lead.Patient_Date_of_Birth__c);
+        insert osa50;
+        return osa50;
     }
 
     private static Epworth_Questionnaire__c CreateEpworthQuestionnaire(Lead lead) {
@@ -114,6 +125,10 @@ public class ConvertSleepReferralLeads {
         List<Object> params = new List<Object> {provider.Name, patient.Name};
 
         return String.format(template, params);
+    }
+
+    private static Boolean IsPersonOver50(Date dateOfBirth) {
+        return dateOfBirth.monthsBetween(Date.today()) > (50 * 12);
     }
 
 }

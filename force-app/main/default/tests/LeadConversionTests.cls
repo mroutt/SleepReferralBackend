@@ -3,6 +3,7 @@ public class LeadConversionTests {
 
     @IsTest static void CanConvertLead() {
 
+        Integer patientAgeInYears = 55;
         Lead lead = new Lead();
         lead.LeadSource = 'Sleep Referral Web Form';
         lead.Company = 'Dr. John Williams';
@@ -10,7 +11,7 @@ public class LeadConversionTests {
         lead.Provider_Fax__c = '+1(576)999-9994';
         lead.Provider_Number__c = 'AAFFFF99989';
         lead.Provider_Phone__c = '+1(444)444-4444';
-        lead.Patient_Date_of_Birth__c = Date.today().addYears(-25);
+        lead.Patient_Date_of_Birth__c = Date.today().addYears(-patientAgeInYears);
         lead.Patient_Gender__c = 'Male';
         lead.Patient_Medicare_Number__c = '9993844AFDS';
         lead.Patient_Medicare_Exp_Date__c = Date.today().addYears(1);
@@ -29,6 +30,9 @@ public class LeadConversionTests {
         lead.Epworth_Sitting_And_Talking__c = 6;
         lead.Epworth_Sitting_In_Public__c = 7;
         lead.Epworth_Watching_TV__c = 8;
+        lead.OSA50_Apnoeas__c = true;
+        lead.OSA50_Obesity__c = false;
+        lead.OSA50_Snoring__c = true;
 
         insert lead;
 
@@ -70,7 +74,7 @@ public class LeadConversionTests {
         system.assertEquals(lead.Provider_Phone__c, providerContact.Phone);
         system.assertEquals(lead.Provider_Email__c, providerContact.Email);
 
-        // TODO: Validate that the Epworth Questionnaire was created
+        // Validate that the Epworth Questionnaire was created
         Epworth_Questionnaire__c epworth = [SELECT Id, Driving_And_Stopped__c, In_Car__c, 
                                             Lying_Down__C, Sitting_After_Lunch__c, Sitting_And_Reading__c,
                                             Sitting_And_Talking__c, Sitting_In_Public__c, Watching_TV__c 
@@ -84,7 +88,13 @@ public class LeadConversionTests {
         system.assertEquals(lead.Epworth_Sitting_In_Public__c, epworth.Sitting_In_Public__c);
         system.assertEquals(lead.Epworth_Watching_TV__c, epworth.Watching_TV__c);
 
-        // TODO: Validate that the OSA50 Questionnaire was created
+        // Validate that the OSA50 Questionnaire was created
+        OSA50_Questionnaire__c osa50 = [SELECT Id, Apnoeas__c, Obesity__c, Over_50__c, Snoring__c
+                                        FROM OSA50_Questionnaire__c WHERE Id = :sleepReferral.OSA50_Questionnaire__c];
+        system.assertEquals(lead.OSA50_Apnoeas__c, osa50.Apnoeas__c);
+        system.assertEquals(lead.OSA50_Obesity__c, osa50.Obesity__c);
+        system.assertEquals(lead.OSA50_Snoring__c, osa50.Snoring__c);
+        system.assertEquals(patientAgeInYears > 50, osa50.Over_50__c);
 
         // TODO: Validate that the Stop Bang Questionnaire was created
     }
