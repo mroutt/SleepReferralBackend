@@ -36,11 +36,27 @@ public class ConvertSleepReferralLeads {
         sleepReferral.Name = GetSleepReferralName(provider, patient);
         sleepReferral.Epworth_Questionnaire__c = CreateEpworthQuestionnaire(lead).Id;
         sleepReferral.OSA50_Questionnaire__c = CreateOSA50Questionnaire(lead).Id;
+        sleepReferral.Stop_Bang_Questionnaire__c = CreateStopBangQuestionnaire(lead).Id;
         insert sleepReferral;
         return sleepReferral;
     }
 
+    private static Stop_Bang_Questionnaire__c CreateStopBangQuestionnaire(Lead lead) {
+
+        Stop_Bang_Questionnaire__c stopBang = new Stop_Bang_Questionnaire__c();
+        stopBang.Feels_Tired__c = lead.Stop_Bang_Feels_Tired__c;
+        stopBang.High_Blood_Pressure__c = lead.Stop_Bang_High_Blood_Pressure__c;
+        stopBang.Is_Male__c = (lead.Patient_Gender__c == 'Male');
+        stopBang.Is_Over_35__c = IsPersonOver35(lead.Patient_Date_of_Birth__c);
+        stopBang.Neck_Over_40cm__c = lead.Stop_Bang_Neck_Over_40cm__c;
+        stopBang.Observed_Not_Breathing__c = lead.Stop_Bang_Observed_Not_Breathing__c;
+        stopBang.Snores__c = lead.Stop_Bang_Snores__c;
+        insert stopBang;
+        return stopBang;
+    }
+
     private static OSA50_Questionnaire__c CreateOSA50Questionnaire(Lead lead) {
+        
         OSA50_Questionnaire__c osa50 = new OSA50_Questionnaire__c();
         osa50.Apnoeas__c = lead.OSA50_Apnoeas__c;
         osa50.Obesity__c = lead.OSA50_Obesity__c;
@@ -131,4 +147,7 @@ public class ConvertSleepReferralLeads {
         return dateOfBirth.monthsBetween(Date.today()) > (50 * 12);
     }
 
+    private static Boolean IsPersonOver35(Date dateOfBirth) {
+        return dateOfBirth.monthsBetween(Date.today()) > (35 * 12);
+    }
 }

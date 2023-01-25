@@ -33,6 +33,11 @@ public class LeadConversionTests {
         lead.OSA50_Apnoeas__c = true;
         lead.OSA50_Obesity__c = false;
         lead.OSA50_Snoring__c = true;
+        lead.Stop_Bang_Feels_Tired__c = true;
+        lead.Stop_Bang_High_Blood_Pressure__c = true;
+        lead.Stop_Bang_Neck_Over_40cm__c = false;
+        lead.Stop_Bang_Observed_Not_Breathing__c = true;
+        lead.Stop_Bang_Snores__c = true;
 
         insert lead;
 
@@ -96,6 +101,14 @@ public class LeadConversionTests {
         system.assertEquals(lead.OSA50_Snoring__c, osa50.Snoring__c);
         system.assertEquals(patientAgeInYears > 50, osa50.Over_50__c);
 
-        // TODO: Validate that the Stop Bang Questionnaire was created
+        // Validate that the Stop Bang Questionnaire was created
+        Stop_Bang_Questionnaire__c stopBang = [SELECT Id, Feels_Tired__c, High_Blood_Pressure__c, Is_Male__c,
+                                                Is_Over_35__c, Neck_Over_40cm__c, Observed_Not_Breathing__c, Snores__c
+                                                FROM Stop_Bang_Questionnaire__c WHERE Id = :sleepReferral.Stop_Bang_Questionnaire__c];
+        system.assertEquals(lead.Stop_Bang_Feels_Tired__c, stopBang.Feels_Tired__c);
+        system.assertEquals(lead.Stop_Bang_High_Blood_Pressure__c, stopBang.High_Blood_Pressure__c);
+        system.assertEquals(lead.Patient_Gender__c == 'Male', stopBang.Is_Male__c);
+        system.assertEquals(lead.Stop_Bang_Observed_Not_Breathing__c, stopBang.Observed_Not_Breathing__c);
+        system.assertEquals(lead.Stop_Bang_Snores__c, stopBang.Snores__c);
     }
 }
