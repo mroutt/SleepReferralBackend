@@ -25,7 +25,7 @@ public class LeadConversionTests {
         insert lead;
 
         //Validate that the Sleep Referral Record was created
-        List<Sleep_Referral__c> sleepReferrals = [SELECT Id, Created_from_Lead__c, Medicare_Reference_Number__c, Referral_Reason__c, Service__C FROM Sleep_Referral__c];
+        List<Sleep_Referral__c> sleepReferrals = [SELECT Id, Provider__c, Patient__c, Created_from_Lead__c, Medicare_Reference_Number__c, Referral_Reason__c, Service__C FROM Sleep_Referral__c];
 
         system.assertEquals(1, sleepReferrals.size());
         Sleep_Referral__c sleepReferral = sleepReferrals.get(0);
@@ -35,10 +35,16 @@ public class LeadConversionTests {
         system.assertEquals(lead.Referral_Service__c, sleepReferral.Service__c);
 
         // TODO: Validate that the Provider Contact was created
+        //List<Contact> providerContacts = [SELECT Id, LastName, ]        
         
         // TODO: Validate that the Patient Contact was created
 
         // TODO: Validate that the Patient Record was created
+        Patient__c patient = [SELECT Medicare_Exp_Date__c, Medicare_Number__c, Name FROM Patient__c WHERE Id = :sleepReferral.Patient__c];
+        system.assertNotEquals(null, patient);
+        system.assertEquals(lead.Patient_Medicare_Exp_Date__c, patient.Medicare_Exp_Date__c);
+        system.assertEquals(lead.Patient_Medicare_Number__c, patient.Medicare_Number__c);
+        system.assertEquals(lead.FirstName + ' ' + lead.LastName, patient.Name);
 
         // TODO: Validate that the Provider Record was created
 
