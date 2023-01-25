@@ -12,13 +12,11 @@ public class ConvertSleepReferralLeads {
 
     private static void ConvertLead(Lead lead) {
             
-       Provider__c provider = GetProvider(lead);
+        Provider__c provider = GetProvider(lead);
 
-       Patient__c patient = GetPatient(lead);
-        
-       Sleep_Referral__c sleepReferral = CreateSleepReferral(lead, provider, patient);
+        Patient__c patient = GetPatient(lead);
 
-       //TODO: Create the Questionnaire records and associate them with the Sleep Referral Record
+        Sleep_Referral__c sleepReferral = CreateSleepReferral(lead, provider, patient);
 
         //TODO: Mark the lead as converted
 
@@ -36,8 +34,24 @@ public class ConvertSleepReferralLeads {
         sleepReferral.Referral_Reason__c = lead.Referral_Reason__c;
         sleepReferral.Service__c = lead.Referral_Service__c;
         sleepReferral.Name = GetSleepReferralName(provider, patient);
+        sleepReferral.Epworth_Questionnaire__c = CreateEpworthQuestionnaire(lead).Id;
         insert sleepReferral;
         return sleepReferral;
+    }
+
+    private static Epworth_Questionnaire__c CreateEpworthQuestionnaire(Lead lead) {
+
+        Epworth_Questionnaire__c epworth = new Epworth_Questionnaire__c();
+        epworth.In_Car__c = lead.Epworth_In_Car__c;
+        epworth.Lying_Down__C = lead.Epworth_Lying_Down__c;
+        epworth.Sitting_After_Lunch__c = lead.Epworth_Sitting_After_Lunch__c;
+        epworth.Sitting_And_Reading__c = lead.Epworth_Sitting_And_Reading__c;
+        epworth.Sitting_And_Talking__c = lead.Epworth_Sitting_And_Talking__c;
+        epworth.Sitting_In_Public__c = lead.Epworth_Sitting_In_Public__c;
+        epworth.Driving_And_Stopped__c = lead.Epworth_Driving_And_Stopped__c;
+        epworth.Watching_TV__c = lead.Epworth_Watching_TV__c;
+        insert epworth;
+        return epworth;
     }
 
     private static Provider__c GetProvider(Lead lead) {
@@ -51,7 +65,7 @@ public class ConvertSleepReferralLeads {
             contact.Email = lead.Provider_Email__c;
             contact.Fax = lead.Provider_Fax__c;
             contact.LastName = lead.Company;
-            contact.Phone = lead.Phone;
+            contact.Phone = lead.Provider_Phone__c;
             insert contact;
 
             provider = new Provider__c();
