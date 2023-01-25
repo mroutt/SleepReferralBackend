@@ -21,6 +21,8 @@ public class ConvertSleepReferralLeads {
        //TODO: Create the Questionnaire records and associate them with the Sleep Referral Record
 
         //TODO: Mark the lead as converted
+
+        //TODO: Create an opportunity or an activity to set up an appointment with the patient
     }
 
     private static Sleep_Referral__c CreateSleepReferral(Lead lead, Provider__c provider, Patient__c patient) {
@@ -33,6 +35,7 @@ public class ConvertSleepReferralLeads {
         sleepReferral.Medicare_Reference_Number__c = lead.Medicare_Reference_Number__c;
         sleepReferral.Referral_Reason__c = lead.Referral_Reason__c;
         sleepReferral.Service__c = lead.Referral_Service__c;
+        sleepReferral.Name = GetSleepReferralName(provider, patient);
         insert sleepReferral;
         return sleepReferral;
     }
@@ -81,12 +84,22 @@ public class ConvertSleepReferralLeads {
 
             patient = new Patient__c();
             patient.Contact__c = contact.Id;
+            patient.Name = lead.FirstName + ' ' + lead.LastName;
             patient.Medicare_Number__c = lead.Patient_Medicare_Number__c;
             patient.Medicare_Exp_Date__c = lead.Patient_Medicare_Exp_Date__c;
             insert patient;
         }
 
         return patient;
+    }
+
+    private static string GetSleepReferralName(Provider__c provider, Patient__c patient) {
+
+
+        String template = '{0} - {1}';
+        List<Object> params = new List<Object> {provider.Name, patient.Name};
+
+        return String.format(template, params);
     }
 
 }

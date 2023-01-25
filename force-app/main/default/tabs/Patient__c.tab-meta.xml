@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomTab xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customObject>true</customObject>
+    <description>Patients are clients that have been served by a medical provider. These records include the client&apos;s medicare information.</description>
+    <motif>Custom84: Presenter</motif>
+</CustomTab>
