@@ -7,10 +7,10 @@ public class LeadConversionTests {
         Lead lead = new Lead();
         lead.LeadSource = 'Sleep Referral Web Form';
         lead.Company = 'Dr. John Williams';
-        lead.Provider_Email__c = 'sometest@mitchroutt.com';
-        lead.Provider_Fax__c = '+1(576)999-9994';
+        lead.Email = 'sometest@mitchroutt.com';
+        lead.Fax = '+1(576)999-9994';
+        lead.Phone = '+1(444)444-4444';
         lead.Provider_Number__c = 'AAFFFF99989';
-        lead.Provider_Phone__c = '+1(444)444-4444';
         lead.Patient_Date_of_Birth__c = Date.today().addYears(-patientAgeInYears);
         lead.Patient_Gender__c = 'Male';
         lead.Patient_Medicare_Number__c = '9993844AFDS';
@@ -40,6 +40,10 @@ public class LeadConversionTests {
         lead.Stop_Bang_Snores__c = true;
 
         insert lead;
+
+        Test.startTest();
+            ConvertSleepReferralLeads.ConvertLead(lead);
+        Test.stopTest();
 
         // Validate that the Sleep Referral Record was created
         List<Sleep_Referral__c> sleepReferrals = [SELECT Id, Provider__c, Patient__c, Epworth_Questionnaire__c,
@@ -76,8 +80,8 @@ public class LeadConversionTests {
         // Validiate that the Provider Contact was created
         Contact providerContact = [SELECT LastName, Phone, Email FROM Contact WHERE Id = :provider.Contact__c];
         system.assertEquals(lead.Company, providerContact.LastName);
-        system.assertEquals(lead.Provider_Phone__c, providerContact.Phone);
-        system.assertEquals(lead.Provider_Email__c, providerContact.Email);
+        system.assertEquals(lead.Phone, providerContact.Phone);
+        system.assertEquals(lead.Email, providerContact.Email);
 
         // Validate that the Epworth Questionnaire was created
         Epworth_Questionnaire__c epworth = [SELECT Id, Driving_And_Stopped__c, In_Car__c, 

@@ -1,24 +1,15 @@
 public class ConvertSleepReferralLeads {
 
-    public static void Execute(List<Lead> leads) {
+    public static void ConvertLead(Lead lead) {
 
-        for (Lead lead : leads) {
-            if(lead.LeadSource == 'Sleep Referral Web Form') {
-                // This lead came from the web form. Let's convert it.
-                ConvertLead(lead);
-            }
-        }
-    }
-
-    private static void ConvertLead(Lead lead) {
-            
         Provider__c provider = GetProvider(lead);
 
         Patient__c patient = GetPatient(lead);
 
         Sleep_Referral__c sleepReferral = CreateSleepReferral(lead, provider, patient);
 
-        //TODO: Mark the lead as converted
+        lead.Status = 'Closed - Converted';
+        update lead;
 
         //TODO: Create an opportunity or an activity to set up an appointment with the patient
     }
@@ -89,10 +80,10 @@ public class ConvertSleepReferralLeads {
         if(providers.size() == 0) {
 
             Contact contact = new Contact();
-            contact.Email = lead.Provider_Email__c;
-            contact.Fax = lead.Provider_Fax__c;
+            contact.Email = lead.Email;
+            contact.Fax = lead.Fax;
             contact.LastName = lead.Company;
-            contact.Phone = lead.Provider_Phone__c;
+            contact.Phone = lead.Phone;
             insert contact;
 
             provider = new Provider__c();
