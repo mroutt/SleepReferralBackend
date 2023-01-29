@@ -1,6 +1,8 @@
 public class ConvertSleepReferralLeads {
 
-    public static void ConvertLead(Lead lead) {
+    public static void ConvertLead(Id leadId) {
+
+        Lead lead = GetLead(leadId);
 
         Provider__c provider = GetProvider(lead);
 
@@ -12,6 +14,26 @@ public class ConvertSleepReferralLeads {
         update lead;
 
         //TODO: Create an opportunity or an activity to set up an appointment with the patient
+    }
+
+    private static Lead GetLead(Id leadId) {
+        
+        return [SELECT Id, Company, Email, Phone, Fax,
+                Provider_Number__c, Medicare_Reference_Number__c,
+                Referral_Reason__c, Referral_Service__c,
+                Patient_Medicare_Number__c, Patient_Medicare_Exp_Date__c,
+                FirstName, LastName, Patient_Phone__c,
+                Patient_Date_of_Birth__c, Patient_Language__c,
+                Patient_Gender__c,
+                Epworth_In_Car__c, Epworth_Lying_Down__c,
+                Epworth_Sitting_After_Lunch__c, Epworth_Sitting_And_Talking__c, 
+                Epworth_Sitting_In_Public__c, Epworth_Watching_TV__c, 
+                Epworth_Sitting_And_Reading__c, Epworth_Driving_And_Stopped__c,
+                OSA50_Apnoeas__c, OSA50_Obesity__c, OSA50_Snoring__c,
+                Stop_Bang_Feels_Tired__c, Stop_Bang_High_Blood_Pressure__c,
+                Stop_Bang_Neck_Over_40cm__c, Stop_Bang_Observed_Not_Breathing__C,
+                Stop_Bang_Snores__c                  
+                FROM Lead WHERE Id = :leadId];
     }
 
     private static Sleep_Referral__c CreateSleepReferral(Lead lead, Provider__c provider, Patient__c patient) {

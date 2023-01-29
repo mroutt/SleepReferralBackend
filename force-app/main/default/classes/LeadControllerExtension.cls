@@ -23,11 +23,14 @@ public class LeadControllerExtension {
     }
 
     public PageReference DoConvert() {
+        
+        ConvertSleepReferralLeads.ConvertLead(lead.Id);
         returnPage.setRedirect(true);
         return returnPage;
     }    
 
     private static Lead GetLead(Id leadId) {
+        
         return [SELECT Id, Patient_Medicare_Number__c, Provider_Number__c, Company, FirstName, LastName FROM Lead WHERE Id = :leadId];
     }
 
