@@ -9,22 +9,34 @@
             <apex:slds />
             <apex:form >
 
-                <div class="modal-header slds-modal__header" >
+                <!-- <div class="modal-header slds-modal__header" > -->
+                <div>
                     <h2 class="title slds-text-heading--medium" >Convert Sleep Referral Lead</h2>
                 </div>
 
-                <div class="modal-body scrollable slds-modal__content slds-p-around--medium">
-                    
-                    <div rendered="{!PatientExists}">
-                        We found a patient with Medicare Number {!lead.Patient_Medicare_Number__c}
+                <!-- <div class="modal-body scrollable slds-modal__content slds-p-around--medium"> -->
+                <div>    
+                    <div style="display:{!if(ProviderExists, 'block', 'none')};">
+                        We found an existing Provider record with Provider Number {!lead.Provider_Number__c} and the name {!provider.Name}.
+                        The Sleep Referral record will be attached to this Provider record.
                     </div>
-                    <div rendered="{!PatientDoesNotExist}">
-                        We will create a new patient with Medicare Number {!lead.Patient_Medicare_Number__c}
+                    <div style="display:{!if(!ProviderExists, 'block', 'none')};">
+                        We will create a new Provider record for {!lead.Company} with Provider Number {!lead.Provider_Number__c}
                     </div>
-
                 </div>
 
-                <div class="modal-footer slds-modal__footer">
+                <div>    
+                    <div style="display:{!if(PatientExists, 'block', 'none')};">
+                        We found an existing patient with Medicare Number {!lead.Patient_Medicare_Number__c} and the name {!patient.Name}.
+                        The Sleep Referral record will be attached to this Patient record.
+                    </div>
+                    <div style="display:{!if(!PatientExists, 'block', 'none')};">
+                        We will create a new patient record for {!lead.FirstName} {!lead.LastName} with Medicare Number {!lead.Patient_Medicare_Number__c}
+                    </div>
+                </div>
+
+                <!-- <div class="modal-footer slds-modal__footer"> -->
+                <div>                    
                     <span class=" label bBody truncate" dir="ltr">
                         <apex:commandButton styleClass="slds-button slds-button--neutral" value="Cancel" action="{!Cancel}"/>
 
